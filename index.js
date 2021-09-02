@@ -48,8 +48,8 @@ const writePb = async (ipfs, obj, options) => {
   return res
 }
 
-const readPb = async (ipfs, cid) => {
-  const result = await ipfs.dag.get(cid)
+const readPb = async (ipfs, cid, options) => {
+  const result = await ipfs.dag.get(cid, options)
   const dagNode = result.value
 
   return JSON.parse(Buffer.from(dagNode.Data).toString())
@@ -76,7 +76,7 @@ const writeCbor = async (ipfs, obj, options) => {
 }
 
 const readCbor = async (ipfs, cid, options) => {
-  const result = await ipfs.dag.get(cid)
+  const result = await ipfs.dag.get(cid, options)
   const obj = result.value
   const links = options.links || []
   links.forEach((prop) => {
