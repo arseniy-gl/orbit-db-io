@@ -51,8 +51,8 @@ const writePb = async (ipfs, payload, options) => {
   return res
 }
 
-const readPb = async (ipfs, cid) => {
-  const result = await ipfs.dag.get(cid)
+const readPb = async (ipfs, cid, options = {}) => {
+  const result = await ipfs.dag.get(cid, options)
   const dagNode = result.value
 
   return JSON.parse(Buffer.from(dagNode.Data).toString())
@@ -79,8 +79,8 @@ const writeCbor = async (ipfs, obj, options) => {
   return res
 }
 
-const readCbor = async (ipfs, cid, options) => {
-  const result = await ipfs.dag.get(cid)
+const readCbor = async (ipfs, cid, options = {}) => {
+  const result = await ipfs.dag.get(cid, options)
   const obj = result.value
   const links = options.links || []
   links.forEach((prop) => {
@@ -95,7 +95,7 @@ const readCbor = async (ipfs, cid, options) => {
 const writeObj = async (ipfs, obj, options) => {
   const onlyHash = options.onlyHash || false
   const base = options.base || defaultBase
-  const opts = Object.assign({}, { onlyHash: onlyHash },
+  const opts = Object.assign({}, { onlyHash },
     options.format ? { format: options.format, hashAlg: 'sha2-256' } : {})
   if (opts.format === 'dag-pb') {
     obj = {
